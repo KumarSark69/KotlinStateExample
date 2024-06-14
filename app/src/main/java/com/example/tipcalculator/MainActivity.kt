@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.DrawableRes
+import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,8 +17,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
@@ -34,10 +33,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.app.NotificationCompat.Style
 import com.example.tipcalculator.ui.theme.TipCalculatorTheme
 import java.text.NumberFormat
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -53,7 +50,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             TipCalculatorTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                   tipTimeLayoutPreview(
+                   TipTimeLayoutPreview(
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
@@ -64,7 +61,7 @@ class MainActivity : ComponentActivity() {
 
 
 @Composable
-fun tipTimeLayout(){
+fun TipTimeLayout(){
     Column(modifier = Modifier
         .statusBarsPadding()
         .padding(40.dp)
@@ -122,7 +119,8 @@ fun tipTimeLayout(){
         Spacer(modifier = Modifier.height(150.dp))
     }
 }
-private fun calculateTip(amount:Double,tipPercentage:Double=15.0, roundUp: Boolean):String{
+@VisibleForTesting
+internal fun calculateTip(amount:Double,tipPercentage:Double=15.0, roundUp: Boolean):String{
     var tip=(tipPercentage/100)*amount
     if (roundUp) {
         tip = kotlin.math.ceil(tip)
@@ -165,8 +163,8 @@ fun RoundTheTipRow(
 }
 @Preview(showBackground = true)
 @Composable
-fun tipTimeLayoutPreview(modifier: Modifier=Modifier) {
+fun TipTimeLayoutPreview(modifier: Modifier=Modifier) {
     TipCalculatorTheme {
-        tipTimeLayout()
+        TipTimeLayout()
     }
 }
